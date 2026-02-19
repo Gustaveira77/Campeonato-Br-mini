@@ -1,0 +1,121 @@
+1 - TABELA DE CLASSIFICAÇÃO 
+
+Select
+        time,
+        sum(pontos) as total_pontos
+        from ( 
+        select 
+        time_casa as time,
+        case
+        when gols_casa > gols_fora
+        then 3
+        when gols_casa = gols_fora
+        then 1
+        else 0
+        end as pontos
+        from partidas
+        
+        union all
+        
+        select 
+        time_fora as time,
+        case
+        when gols_fora > gols_casa
+        then 3
+        when gols_fora = gols_casa
+        then 1
+        else 0
+        end as pontos
+        from partidas
+        ) as tabela_geral 
+        group by time;
+        order by total pontos desc;
+
+2 - Pontos em casa
+ 
+Select 
+    time_casa,
+    sum ( 
+    case
+    when gols_casa > gols_fora
+    then 3
+    when gols_casa = gols_fora
+    then 1
+    else 0
+    end )as pontos_casa 
+    from partidas 
+    group by time_casa;
+
+3 - Pontos fora 
+
+Select 
+       time_fora,
+       sum(
+       case 
+       when gols_fora > gols_casa
+       then 3
+       when gols_fora - gols_casa
+       then 1
+       else 0
+       end 
+       ) as pontos_fora
+       from partidas group by time_fora;
+
+4 - Artilharia (gols pró por time)
+ 
+Select time, sum(gols) as total_gols
+        from (
+            select time_casa as time, gols_casa as 
+        gols
+        from partidas
+        
+        union all
+        
+        select time_fora as time, gols_fora as gols
+        from partidas
+        ) as gols_totais
+        group by time
+        order by total_gols desc;
+
+5 - Tabela completa (Pontos + Saldo + Gols)
+
+Select 
+        time,
+        sum(pontos) as total_pontos,
+        sum(gols_pro) as gols_pro,
+        sum(gols_contra) as gols_contra,
+        sum(gols_pro) - sum(gols_contra) as
+        saldo_gols
+        from (
+        select 
+        time_casa as time,
+        case
+        when gols_casa > gols_fora
+        then 3
+        when gols_casa = gols_fora
+        then 1
+        else 0
+        end as pontos,
+        gols_casa as gols_pro,
+        gols_fora as gols_contra
+        from partidas
+        
+        Union all
+        
+        select 
+        time_fora as time,
+        case
+        when gols_fora > gols_casa
+        then 3
+        when gols_fora = gols_casa
+        then 1
+        else 0
+        end as pontos,
+        gols_fora as gols_pro,
+        gols_casa as gols_contra
+        from partidas
+        ) as tabela_completa
+        group by time
+        order by total_pontos desc, saldo_gols
+        desc;
+        

@@ -1,0 +1,13 @@
+Create database campeonato;
+Use campeonato;
+
+
+Create table times (
+    id int primary key auto_increment,
+    nome varchar (100) not null unique,
+    cidade varchar (100),
+    estadio varchar (100),
+    ano_fundacao int,
+    pontos int default 0,
+    saldo_gols int default 0
+    );

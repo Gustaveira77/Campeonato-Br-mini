@@ -1,0 +1,6 @@
+Insert into times ( nome, cidade, estadio, ano_fundacao)
+    Values
+    ('Flamengo', 'Rio de Janeiro', 'Maracanã', 1895),
+    ('Palmeiras', 'Sao Paulo', 'Allianz Parque', 1914),
+    ('Corinthians', 'Sao Paulo', 'Neo Quimica Arena', 1910),
+    ('Gremio', 'Porto Alegre', 'Arena do Gremio', 1903);
